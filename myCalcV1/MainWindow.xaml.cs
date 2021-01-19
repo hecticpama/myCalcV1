@@ -1,0 +1,104 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+
+namespace myCalcV1
+{
+
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+
+        }
+
+        private void btn_Number_Selected(object sender, RoutedEventArgs e)
+        {
+            Button btn = (Button)sender;
+            txtNumInput.Text += btn.Content.ToString();
+
+        }
+
+        // Equals Event
+        private void showResults(object sender, RoutedEventArgs e)
+        {
+
+            String Operator = ((Button)e.OriginalSource).Content.ToString();
+
+            try
+            {
+                // Could use this IF statement as well #instead of switch, developer's preference.
+
+                /**if  (Operator == "=")
+                 { 
+                      historyDisplay.Content = "";
+                      historyDisplay.Content +=  txtNumInput.Text + Operator;
+                      txtNumInput.Text = new DataTable().Compute(txtNumInput.Text, null).ToString();
+                      
+                }
+
+                 else txtNumInput.Text = "";
+                     MessageBox.Show("Please!, Try again");**/
+
+
+                switch (Operator)
+
+                {
+                    case "=":
+                        // Initialize label content from the current values
+                        historyDisplay.Content = "";
+
+                        // Add text values to label
+                        historyDisplay.Content +=  txtNumInput.Text + Operator;
+
+                        // Update Text with calculations
+                        txtNumInput.Text = new DataTable().Compute(txtNumInput.Text, null).ToString();
+                        break;
+                    default:
+                        txtNumInput.Text = "";
+                        MessageBox.Show("Please!, Try again");
+                        break;
+
+                }
+
+            }
+
+            catch (Exception ex)
+            {
+                MessageBox.Show("A handled exception just occurred: " + ex.Message, "Exception Sample", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+
+        }
+
+        private void Exit(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void ClearEntry(object sender, RoutedEventArgs e)
+        {
+            txtNumInput.Clear();
+            // Should also do the work # clear txt entries
+            //txtNumInput.Text = "";
+        }
+
+
+    }
+}
+
+
